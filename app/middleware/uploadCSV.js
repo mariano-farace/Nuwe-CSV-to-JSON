@@ -41,7 +41,6 @@ const uploadAdCSV = (req, res, next) => {
     }
     // Everything went fine
 
-    console.log("pasa por el upload");
     next();
   });
 };

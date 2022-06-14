@@ -10,5 +10,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/cvstojson", uploadCSV);
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`App listening on port ${port}`);
 });
