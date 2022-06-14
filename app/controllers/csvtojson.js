@@ -18,7 +18,7 @@ async function parseFromCsvBuffer(req, res) {
   } catch (error) {
     res.status(500).json(
       apiResponse({
-        message: "An error occurred while posting the ads.",
+        message: "An error occurred while parsing the file",
         errors: error.message,
       })
     );
