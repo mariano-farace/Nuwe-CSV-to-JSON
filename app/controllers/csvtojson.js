@@ -1,7 +1,7 @@
 const csv = require("csvtojson");
 const { apiResponse } = require("../utils");
 
-async function parseAdsFromCsvBuffer(req, res) {
+async function parseFromCsvBuffer(req, res) {
   try {
     // As per documentation >  if checkType is true, csvtojson will attempt to find a proper type parser according to the cell value. That is, if cell value is "5", a numberParser will be used and all value under that column will use the numberParser to transform data.
 
@@ -25,4 +25,4 @@ async function parseAdsFromCsvBuffer(req, res) {
   }
 }
 
-module.exports = { parseAdsFromCsvBuffer };
+module.exports = { parseFromCsvBuffer };

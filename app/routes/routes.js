@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const { parseAdsFromCsvBuffer } = require("../controllers/csvtojson");
+const { parseFromCsvBuffer } = require("../controllers/csvtojson");
 const { uploadAdCSV } = require("../middleware/uploadCSV");
 
-router.post("/", uploadAdCSV, parseAdsFromCsvBuffer);
+router.post("/", uploadAdCSV, parseFromCsvBuffer);
 
 module.exports = router;
