@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "019f8bab-fa77-416f-83ac-ee164e7be948",
+		"name": "Nuwe-cvs-to-json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16005683"
+	},
+	"item": [
+		{
+			"name": "Convert database_test.csv to JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" var jsonResponse = pm.response.json();",
+							" var data = jsonResponse.data",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type header is application/json\", () => {",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');",
+							"});",
+							"pm.test(\"Response message is: file transformed successfully\", function () {",
+							"       pm.expect(jsonResponse.message).to.eql(\"file transformed successfully\");",
+							"});",
+							"",
+							"pm.test(\"Response errors is empty\", function () {",
+							"   pm.expect(jsonResponse.errors).to.be.empty;",
+							"});",
+							"",
+							"",
+							"// Check CSV data structure and type",
+							"data.forEach(function(element) {",
+							"   pm.test(\"Test that all keys are present and have correct data type\", function () {",
+							"   pm.expect(element).to.have.all.keys('id', 'firstname', \"lastname\",\"salary\", \"profession\", \"age\"  );   ",
+							"   pm.expect(element.id).to.be.a(\"number\");",
+							"   pm.expect(element.firstname).to.be.a(\"string\");",
+							"   pm.expect(element.lastname).to.be.a(\"string\");",
+							"   pm.expect(element.salary).to.be.a(\"number\");",
+							"   pm.expect(element.profession).to.be.a(\"string\");",
+							"   pm.expect(element.age).to.be.a(\"number\");",
+							"    })",
+							"});",
+							"",
+							"// Check that an specific data element has specific values",
+							" pm.test(\"Test that an specific data element has specific values\", function () {",
+							"   pm.expect(data[0].id).to.eql(535);",
+							"   pm.expect(data[0].firstname).to.eql(\"Susette\");",
+							"   pm.expect(data[0].lastname).to.eql(\"Fancie\");",
+							"   pm.expect(data[0].salary).to.eql(25862.22);",
+							"   pm.expect(data[0].profession).to.eql(\"police officer\");",
+							"   pm.expect(data[0].age).to.eql(36);",
+							"   ",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "some_csv",
+							"type": "file",
+							"src": "/home/atom/Desktop/testforCSVtoJSON.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/cvstojson",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"cvstojson"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Convert CSV Numbers to JSON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" var jsonResponse = pm.response.json();",
+							" var data = jsonResponse.data",
+							"",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type header is application/json\", () => {",
+							"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');",
+							"});",
+							"pm.test(\"Response message is: file transformed successfully\", function () {",
+							"       pm.expect(jsonResponse.message).to.eql(\"file transformed successfully\");",
+							"});",
+							"",
+							"pm.test(\"Response errors is empty\", function () {",
+							"   pm.expect(jsonResponse.errors).to.be.empty;",
+							"});",
+							"",
+							"",
+							"// Check CSV data structure and type",
+							"data.forEach(function(object) {",
+							"   ",
+							"   for (const property in object) {",
+							"",
+							"pm.test(\"Test that all key values are present and have number data type\", function () {",
+							" pm.expect(object.salary).to.be.a(\"number\");",
+							" ",
+							"    })",
+							"",
+							"   }",
+							"",
+							"",
+							"   ",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "some_csv",
+							"type": "file",
+							"src": "/home/atom/Desktop/onlyNumbers.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/cvstojson",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"cvstojson"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
