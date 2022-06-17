@@ -169,8 +169,40 @@ Content-Length: xy
     "errors": "File extension must be CSV"
 }
 ``` 
+# How it works
+The app is comprised of two main parts, a `file uploader` and a `CSV parser`.
+<br/>
+<br/>
+File uploading is handled by multer, as middleware that will assign the uploaded file to. File type will be checked and if it is not a CSV, an error will be thrown. MIME type will also be checked, but there's a caveat. On Linux machines MIME type for a csv will be `text/csv`, but for instance, on a Windows machine with Microsoft Excel installed, CSV files may have a MIME type of `application/vnd.ms-excel` rather than the RFC 4180 suggested type of `text/csv`. This is why I've added multiple vendor-specific MIME types to the check. Bear in mind that an `.xml` will also have an `application/vnd.ms-excel` MIME type, sot that is why it is necesary to also check for the file extension to be `.csv`.
+<br/>
+<br/>
+The CSV parser is a simple CSV to JSON parser provided by the `csvtojson` library. It will parse the CSV and return a JSON with the parsed data. It is important to notice that the option `checkType` is set to `true`, and csvtojson will attempt to find a proper type parser according to the cell value. That is, if cell value is "5", a numberParser will be used and all value under that column will use the numberParser to transform data, which makes parsing files with different types of data possible, like numbers, strings, and dates, and convert them to the correct data type.
+# Tests
 
+Postman tests are included under the folder test, as an exported postman collection. This collection comprises two tests:
 
+1. <b>Convert CSV Numbers to JSON: </b> Intended to test csv files with only numbers (num/Int/double/float) on it's headers. As an example you can use the only_numbers.csv file to test. Will test that: 
+   - Response status is 200
+   - Content-Type header is application/json
+   -  The response message is: file transformed successfully
+   -  The response errors is empty
+   - Every field in the csv file is converted to a Number data type.
+  
+  <br>
+  
+2. <b>Convert database_test.csv to JSON: </b> Intended to test that an specific csv file (database_test.csv) is converted properly. This csv is a complex file that includes numbers and text both as strings. The intention is to test that the service can parse numbers from the csv and text with the correct data type, Number and String respectively. Will test:  
+   - Response status is 200
+   - Content-Type header is application/json
+   -  The response message is: file transformed successfully
+   -  The response errors is empty
+   -  All keys are present
+   -  Each key has the right data type
+   -  Each key/value pair on the first object in the array has the right value 
+
+## How to select files for testing on postman
+You can select files for upload on postman choosing the request, selecting the ```Body``` tab, make sure that ```form-data``` is selected, and under the key ```some_csv``` click on ```Select File```     
+<br>
+![Postman](assets/Screenshot.png)
 
 <!-- CONTACT -->
 # Contact
